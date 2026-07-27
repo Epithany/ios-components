@@ -14,7 +14,7 @@ import { OpenItem } from "@/lib/OpenItem";
 
 import { isOpenContext } from "@/lib/iosLibraryProvider";
 
-export default function AppFolder({ title, items = [] }) {
+export default function AppFolder({ folderKey, title, items = [] }) {
   const layoutSpring = {
     type: "spring",
     stiffness: 200,
@@ -22,7 +22,8 @@ export default function AppFolder({ title, items = [] }) {
     bounce: 0,
   };
 
-  const { isOpen, setIsOpen } = useContext(isOpenContext);
+  const { openFolderId, setOpenFolderId } = useContext(isOpenContext);
+  const isOpen = openFolderId === folderKey;
   const miniGridRef = useRef(null);
   const itemRefs = useRef({});
   const [folderCenter, setFolderCenter] = useState(null);
@@ -42,7 +43,7 @@ export default function AppFolder({ title, items = [] }) {
         y: rect.top + rect.height / 2,
       });
     }
-    setIsOpen(true);
+    setOpenFolderId(folderKey);
   };
   useLayoutEffect(() => {
     if (!isOpen || !folderCenter) return;
@@ -156,7 +157,7 @@ export default function AppFolder({ title, items = [] }) {
               <motion.div
                 key="open"
                 className="open-overlay"
-                onClick={() => setIsOpen(false)}
+                onClick={() => setOpenFolderId(null)}
                 initial={{
                   opacity: 0,
                 }}

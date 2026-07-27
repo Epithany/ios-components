@@ -3,10 +3,10 @@ import { useState, createContext } from "react";
 export const isOpenContext = createContext();
 
 export function IosLibraryProvider({children}){
-  const [isOpen, setIsOpen] = useState(false);
+  const [openFolderId, setOpenFolderId] = useState(null);
 
   return(
-    <isOpenContext.Provider value={{ isOpen, setIsOpen }}>
+    <isOpenContext.Provider value={{ openFolderId, setOpenFolderId }}>
       {children}
     </isOpenContext.Provider>
   )
