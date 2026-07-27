@@ -14,54 +14,6 @@ import { OpenItem } from "@/lib/OpenItem";
 
 import { isOpenContext } from "@/lib/iosLibraryProvider";
 
-const items = [
-  {
-    key: "whatsapp",
-    name: "WhatsApp",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "calendar",
-    name: "Calendar",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "contacts",
-    name: "Contacts",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "files",
-    name: "Files",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "mail",
-    name: "Mail",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "notes",
-    name: "Notes",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "reminders",
-    name: "Reminders",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "shortcuts",
-    name: "Shortcuts",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "wallet",
-    name: "Wallet",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-];
-
 export default function AppFolder({ title, items = [] }) {
   const layoutSpring = {
     type: "spring",

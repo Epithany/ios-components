@@ -1,5 +1,5 @@
-export function getAppFolderData() {
-  const Folder = [
+// Single source of truth: all app data
+const appDataSource = [
     {
       key: "recently-added",
       name: "Recently Added",
@@ -280,5 +280,36 @@ export function getAppFolderData() {
     },
   ];
 
-  return Folder;
+// Get all folder data with their respective apps
+export function getAppFolderData() {
+  return appDataSource;
+}
+
+// Get a specific folder by key
+export function getFolderByKey(folderKey) {
+  return appDataSource.find((folder) => folder.key === folderKey);
+}
+
+// Get apps within a specific folder
+export function getAppsByFolderKey(folderKey) {
+  const folder = getFolderByKey(folderKey);
+  return folder ? folder.apps : [];
+}
+
+// Get all apps across all folders (flattened)
+export function getAllApps() {
+  return appDataSource.flatMap((folder) => folder.apps);
+}
+
+// Get app by key across all folders
+export function getAppByKey(appKey) {
+  return getAllApps().find((app) => app.key === appKey);
+}
+
+// Get folder names for display
+export function getFolderNames() {
+  return appDataSource.map((folder) => ({
+    key: folder.key,
+    name: folder.name,
+  }));
 }
