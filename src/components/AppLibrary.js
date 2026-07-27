@@ -1,5 +1,11 @@
 "use client";
 
+import { IosLibraryProvider } from "@/lib/iosLibraryProvider";
+
 export default function AppLibrary({ children }) {
-  return <div className="w-full h-full">{children}</div>;
+  return (
+    <IosLibraryProvider>
+      <div className="w-full h-full">{children}</div>
+    </IosLibraryProvider>
+  );
 }
