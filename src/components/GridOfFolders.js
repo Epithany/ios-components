@@ -9,5 +9,5 @@ export default function GridOfFolders() {
         <AppFolder key={folder.key} title={folder.name} items={folder.apps} />
       ))}
     </div>
-);
+  );
 }

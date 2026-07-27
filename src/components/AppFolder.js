@@ -10,7 +10,7 @@ import {
 } from "react";
 import { Squircle } from "@squircle-js/react";
 import AppTile from "@/components/AppTile";
-import { iosLibraryProvider } from "@/lib/iosLibraryProvider";
+import { IosLibraryProvider } from "@/lib/iosLibraryProvider";
 import { OpenItem } from "@/lib/OpenItem";
 
 import { isOpenContext } from "@/lib/iosLibraryProvider";
@@ -125,7 +125,7 @@ export default function AppFolder({ title, items = [] }) {
     isOpen && folderCenter && Object.keys(itemOffsets).length === items.length;
 
   return (
-    <iosLibraryProvider>
+    <IosLibraryProvider>
       <MotionConfig transition={layoutSpring}>
         <div className="w-fit">
           <AnimatePresence
@@ -278,7 +278,7 @@ export default function AppFolder({ title, items = [] }) {
         </div>
         <Stylesheet />
       </MotionConfig>
-    </iosLibraryProvider>
+    </IosLibraryProvider>
   );
 }
 

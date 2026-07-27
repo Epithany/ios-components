@@ -280,13 +280,5 @@ export function getAppFolderData() {
     },
   ];
 
-  let list;
-  Folder.forEach(folder=>{
-    Folder.concat(folder.key)
-  })
-  console.log(Folder)
-  return list;
+  return Folder;
 }
-
-
-getAppFolderData()
