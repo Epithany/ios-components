@@ -10,60 +10,11 @@ import {
 } from "react";
 import { Squircle } from "@squircle-js/react";
 import AppTile from "@/components/AppTile";
-import { iosLibraryProvider } from "@/lib/iosLibraryProvider";
 import { OpenItem } from "@/lib/OpenItem";
 
 import { isOpenContext } from "@/lib/iosLibraryProvider";
 
-const items = [
-  {
-    key: "whatsapp",
-    name: "WhatsApp",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "calendar",
-    name: "Calendar",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "contacts",
-    name: "Contacts",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "files",
-    name: "Files",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "mail",
-    name: "Mail",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "notes",
-    name: "Notes",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "reminders",
-    name: "Reminders",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "shortcuts",
-    name: "Shortcuts",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-  {
-    key: "wallet",
-    name: "Wallet",
-    iconSrc: "/photos/creativestudio/pixelmatorpro.png",
-  },
-];
-
-export default function AppFolder({ title, items = [] }) {
+export default function AppFolder({ folderKey, title, items = [], isAnyFolderOpen = false }) {
   const layoutSpring = {
     type: "spring",
     stiffness: 200,
@@ -71,7 +22,8 @@ export default function AppFolder({ title, items = [] }) {
     bounce: 0,
   };
 
-  const { isOpen, setIsOpen } = useContext(isOpenContext);
+  const { openFolderId, setOpenFolderId } = useContext(isOpenContext);
+  const isOpen = openFolderId === folderKey;
   const miniGridRef = useRef(null);
   const itemRefs = useRef({});
   const [folderCenter, setFolderCenter] = useState(null);
@@ -91,7 +43,7 @@ export default function AppFolder({ title, items = [] }) {
         y: rect.top + rect.height / 2,
       });
     }
-    setIsOpen(true);
+    setOpenFolderId(folderKey);
   };
   useLayoutEffect(() => {
     if (!isOpen || !folderCenter) return;
@@ -125,8 +77,7 @@ export default function AppFolder({ title, items = [] }) {
     isOpen && folderCenter && Object.keys(itemOffsets).length === items.length;
 
   return (
-    <iosLibraryProvider>
-      <MotionConfig transition={layoutSpring}>
+    <MotionConfig transition={layoutSpring}>
         <div className="w-fit">
           <AnimatePresence
             mode="popLayout"
@@ -148,8 +99,9 @@ export default function AppFolder({ title, items = [] }) {
                   scale: 0.9,
                 }}
                 animate={{
-                  opacity: 1,
-                  scale: 1,
+                  opacity: isAnyFolderOpen && !isOpen ? 0 : 1,
+                  scale: isAnyFolderOpen && !isOpen ? 0.7 : 1,
+                  y: isAnyFolderOpen && !isOpen ? 20 : 0,
                 }}
                 exit={{
                   opacity: 0,
@@ -205,22 +157,44 @@ export default function AppFolder({ title, items = [] }) {
             ) : (
               <motion.div
                 key="open"
-                className="open-overlay"
-                onClick={() => setIsOpen(false)}
+                className="open-overlay bg-black/40"
+                onClick={() => setOpenFolderId(null)}
                 initial={{
                   opacity: 0,
+                  backdropFilter: "blur(0px)",
                 }}
                 animate={{
                   opacity: 1,
+                  backdropFilter: "blur(12px)",
                 }}
                 exit={{
                   opacity: 0,
+                  backdropFilter: "blur(0px)",
                   transition: {
                     delay: 0.025,
                   },
                 }}
               >
-                <div className="open-folder">
+                <motion.div 
+                  className="open-folder"
+                  initial={{
+                    scale: 0.3,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    scale: 1,
+                    opacity: 1,
+                  }}
+                  exit={{
+                    scale: 0.3,
+                    opacity: 0,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 150,
+                    damping: 25,
+                  }}
+                >
                   <motion.div
                     className="open-title"
                     initial={{
@@ -271,14 +245,13 @@ export default function AppFolder({ title, items = [] }) {
                       />
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
         <Stylesheet />
       </MotionConfig>
-    </iosLibraryProvider>
   );
 }
 
