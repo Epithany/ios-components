@@ -14,7 +14,7 @@ import { OpenItem } from "@/lib/OpenItem";
 
 import { isOpenContext } from "@/lib/iosLibraryProvider";
 
-export default function AppFolder({ folderKey, title, items = [] }) {
+export default function AppFolder({ folderKey, title, items = [], isAnyFolderOpen = false }) {
   const layoutSpring = {
     type: "spring",
     stiffness: 200,
@@ -99,8 +99,9 @@ export default function AppFolder({ folderKey, title, items = [] }) {
                   scale: 0.9,
                 }}
                 animate={{
-                  opacity: 1,
-                  scale: 1,
+                  opacity: isAnyFolderOpen && !isOpen ? 0 : 1,
+                  scale: isAnyFolderOpen && !isOpen ? 0.7 : 1,
+                  y: isAnyFolderOpen && !isOpen ? 20 : 0,
                 }}
                 exit={{
                   opacity: 0,
@@ -156,22 +157,44 @@ export default function AppFolder({ folderKey, title, items = [] }) {
             ) : (
               <motion.div
                 key="open"
-                className="open-overlay"
+                className="open-overlay bg-black/40"
                 onClick={() => setOpenFolderId(null)}
                 initial={{
                   opacity: 0,
+                  backdropFilter: "blur(0px)",
                 }}
                 animate={{
                   opacity: 1,
+                  backdropFilter: "blur(12px)",
                 }}
                 exit={{
                   opacity: 0,
+                  backdropFilter: "blur(0px)",
                   transition: {
                     delay: 0.025,
                   },
                 }}
               >
-                <div className="open-folder">
+                <motion.div 
+                  className="open-folder"
+                  initial={{
+                    scale: 0.3,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    scale: 1,
+                    opacity: 1,
+                  }}
+                  exit={{
+                    scale: 0.3,
+                    opacity: 0,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 150,
+                    damping: 25,
+                  }}
+                >
                   <motion.div
                     className="open-title"
                     initial={{
@@ -222,7 +245,7 @@ export default function AppFolder({ folderKey, title, items = [] }) {
                       />
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
